@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/png" href="favicon.png">
+        
+        <title>Sneakers :: Fall Limited Addition Sneakers</title>
+        
+        <script defer type="module" src="./src/index.js"></script>
+        <link rel="stylesheet" href="./src/main.css">
+    </head>
+    
+    <body x-data="pdp">
+        <div class="h-full flex flex-col container mx-auto max-w-6xl">
+            <header class="mx-6 py-5 md:pt-10 md:py-0 border-b border-gray-150 flex items-center md:items-start relative">
+                <!-- Mobile menu trigger -->
+                <button class="mr-4 -mb-1 md:hidden" @click="toggleMenu">
+                    <img src="/icon-menu.svg" alt="Mobile Menu">
+                </button>
+
+                <!-- Desktop header -->
+                <a href="#"><img src="/logo.svg" alt="Sneakers logo" class="w-[138px] h-[20px]" width="138" height="20"></a>
+                <nav class="ml-10 hidden md:block">
+                    <ul class="flex">
+                        <li class="mx-2 pb-10 border-b-4 border-white hover:border-orange-200"><a class="p-2 text-gray-400 hover:text-gray-200" href="#">Collections</a></li>
+                        <li class="mx-2 pb-10 border-b-4 border-white hover:border-orange-200"><a class="p-2 text-gray-400 hover:text-gray-200" href="#">Men</a></li>
+                        <li class="mx-2 pb-10 border-b-4 border-white hover:border-orange-200"><a class="p-2 text-gray-400 hover:text-gray-200" href="#">Women</a></li>
+                        <li class="mx-2 pb-10 border-b-4 border-white hover:border-orange-200"><a class="p-2 text-gray-400 hover:text-gray-200" href="#">About</a></li>
+                        <li class="mx-2 pb-10 border-b-4 border-white hover:border-orange-200"><a class="p-2 text-gray-400 hover:text-gray-200" href="#">Contact</a></li>
+                    </ul>
+                </nav>
+                <button class="ml-auto h-8 relative" @click="minicartOpen = true">
+                    <img src="/icon-cart.svg" alt="Cart" />
+                    <span class="px-2 bg-orange-200 text-white text-xs font-bold rounded-xl absolute top-0" x-text="cartItems" x-show="cartItems > 0"></span>
+                </button>
+                <button class="ml-6 md:ml-12 md:-mt-2 h-6 w-6 md:h-12 md:w-12 block hover:ring hover:ring-orange-200 rounded-full">
+                    <img src="/image-avatar.png" alt="Avatar">
+                </button>
+
+                <!-- Minicart -->
+                <div class="md:w-[360px] flex flex-col absolute -right-4 -left-4 top-20 md:left-[unset] md:top-24 bg-white rounded-xl shadow-large z-20" x-show="minicartOpen" @click.outside="minicartOpen = false">
+                    <div class="p-4 font-bold text-gray-100 border-b border-gray-150">Cart</div>
+                    <div class="p-4 text-gray-200 font-bold" x-show="cartItems === 0">
+                        <p class="py-16 text-center">Your cart is empty.</p>
+                    </div>
+                    <div class="p-6" x-show="cartItems > 0">
+                        <ul class="mb-6">
+                            <li class="flex items-center gap-4">
+                                <span><img class="rounded h-12 w-12" src="image-product-1-thumbnail.jpg" alt="Tumbnail"></span>
+                                <div class="flex flex-col text-gray-200">
+                                    <p x-text="product.name"></p>
+                                    <p>
+                                        <span x-text="finalPrice"></span>
+                                        <span>x</span>
+                                        <span x-text="cartItems"></span>
+                                        <strong class="ml-1" x-text="total"></strong>
+                                    </p>
+                                </div>
+                                <i class="ml-auto cursor-pointer"><img src="/icon-delete.svg" alt="Delete" @click="removeFromCart"></i>
+                            </li>
+                        </ul>
+                        <button class="h-12 w-full px-4 text-orange-600 bg-orange-200 font-bold rounded-lg transition-colors duration-300 hover:bg-orange-250" @click="checkout">
+                            Checkout
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Mobile menu -->
+            <aside class="h-screen absolute z-10 transition-transform duration-500 ease-out -translate-x-full" :class="menuOpen ? 'translate-x-0': ''">
+                <div class="w-60 px-7.5 h-full bg-gray-600 flex flex-col text-gray-400 px-5 py-4 relative z-50">
+                    <button class="mt-3 mb-12" @click="toggleMenu">
+                        <img src="/icon-close.svg" alt="Close">
+                    </button>
+                    <ul class="flex flex-col space-y-5">
+                        <li><a class="font-bold text-lg text-gray-100" href="#">Collections</a></li>
+                        <li><a class="font-bold text-lg text-gray-100" href="#">Men</a></li>
+                        <li><a class="font-bold text-lg text-gray-100" href="#">Women</a></li>
+                        <li><a class="font-bold text-lg text-gray-100" href="#">About</a></li>
+                        <li><a class="font-bold text-lg text-gray-100" href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <main class="pb-20 pt-0 md:pt-24 max-w-7xl md:flex md:justify-around md:items-center">
+                <!-- Media gallery -->
+                <div class="md:max-w-md md:ml-6">
+                    <div class="mb-4 w-screen md:max-w-md relative overflow-hidden md:rounded-xl">
+                        <a href="#" class="flex transition-transform duration-500 ease-out" :class="gallery.translate" @click="lightbox = true">
+                            <img src="/image-product-1.jpg" alt="Fall Limited Edition Sneakers">
+                            <img src="/image-product-2.jpg" alt="Fall Limited Edition Sneakers">
+                            <img src="/image-product-3.jpg" alt="Fall Limited Edition Sneakers">
+                            <img src="/image-product-4.jpg" alt="Fall Limited Edition Sneakers">
+                        </a>
+                        <!-- Controls -->
+                        <div class="p-4 w-full flex justify-between absolute top-1/2 -translate-y-1/2 md:opacity-0 transition-opacity duration-300 md:hover:opacity-100">
+                            <button class="w-10 h-10 bg-gray-600 rounded-full" @click="prevSlide">
+                                <svg class="m-auto stroke-gray-100 hover:stroke-orange-200" width="16" height="18" xmlns="http://www.w3.org/2000/svg"><path d="M11 1 3 9l8 8" stroke-width="3" fill="none" fill-rule="evenodd"/></svg>
+                            </button>
+                            <button class="w-10 h-10 bg-gray-600 rounded-full" @click="nextSlide">
+                                <svg class="m-auto stroke-gray-100 hover:stroke-orange-200" width="12" height="18" xmlns="http://www.w3.org/2000/svg"><path d="m2 1 8 8-8 8" stroke-width="3" fill="none" fill-rule="evenodd"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Thumbnails -->
+                    <div class="hidden mt-8 w-full md:grid grid-cols-4 gap-6">
+                        <a href="#" class="block relative rounded-xl overflow-hidden hover:active-state" :class="gallery.position === 0 ? 'active-state ring ring-orange-200' : ''" @click="setGalleryPosition(0)"><img src="image-product-1-thumbnail.jpg" alt="Tumbnail 1"></a>
+                        <a href="#" class="block relative rounded-xl overflow-hidden hover:active-state" :class="gallery.position === 1 ? 'active-state ring ring-orange-200' : ''" @click="setGalleryPosition(1)"><img src="image-product-2-thumbnail.jpg" alt="Tumbnail 2"></a>
+                        <a href="#" class="block relative rounded-xl overflow-hidden hover:active-state" :class="gallery.position === 2 ? 'active-state ring ring-orange-200' : ''" @click="setGalleryPosition(2)"><img src="image-product-3-thumbnail.jpg" alt="Tumbnail 3"></a>
+                        <a href="#" class="block relative rounded-xl overflow-hidden hover:active-state" :class="gallery.position === 3 ? 'active-state ring ring-orange-200' : ''" @click="setGalleryPosition(3)"><img src="image-product-4-thumbnail.jpg" alt="Tumbnail 4"></a>
+                    </div>
+                </div>
+
+                <!-- Product info -->
+                <div class="p-6 max-w-lg">
+                    <p class="mb-4 text-orange-200 uppercase font-bold text-xs tracking-wider" x-text="product.brand"></p>
+                    <h1 class="mb-4 text-3xl md:text-5xl font-bold text-gray-100" x-text="product.name"></h1>
+                    <p class="mb-6 text-[15px] md:text-base text-gray-200" x-text="product.description">
+                    </p>
+                    <div class="flex justify-between items-center md:flex-wrap">
+                        <strong class="text-3xl text-gray-100" x-text="finalPrice"></strong>
+                        <div class="mx-3 px-2 md:mr-auto text text-orange-200 bg-orange-600 rounded-md font-bold" x-text="formattedDiscount">50%</div>
+                        <span class="ml-auto text-gray-400 line-through font-bold md:basis-full md:mt-2" x-text="oldPrice"></span>
+                    </div>
+                    <!-- Add to cart -->
+                    <div class="flex flex-col flex-wrap md:flex-row gap-4 my-8">
+                        <div class="px-4 h-12 md:basis-5/12 bg-gray-600 rounded-md flex justify-between items-center" :class="error ? 'ring ring-error' : ''">
+                            <button class="-mt-2 font-bold text-orange-200 text-3xl" @click="decreaseQty">-</button>
+                            <input type="number" name="qty" x-model="qty" class="text-center bg-transparent font-bold max-w-[4rem] focus:outline-none">
+                            <button class="-mt-2 font-bold text-orange-200 text-3xl" @click="increaseQty">+</button>
+                        </div>
+                        <button class="h-12 px-4 md:basis-6/12 relative text-orange-600 bg-orange-200 shadow-glow font-bold flex justify-center items-center rounded-lg transition-colors duration-300 hover:bg-orange-250" @click="addToCart">
+                            <svg class="mr-3 -ml-1 w-4 h-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="facebook-f" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 20"><path d="M20.925 3.641H3.863L3.61.816A.896.896 0 0 0 2.717 0H.897a.896.896 0 1 0 0 1.792h1l1.031 11.483c.073.828.52 1.726 1.291 2.336C2.83 17.385 4.099 20 6.359 20c1.875 0 3.197-1.87 2.554-3.642h4.905c-.642 1.77.677 3.642 2.555 3.642a2.72 2.72 0 0 0 2.717-2.717 2.72 2.72 0 0 0-2.717-2.717H6.365c-.681 0-1.274-.41-1.53-1.009l14.321-.842a.896.896 0 0 0 .817-.677l1.821-7.283a.897.897 0 0 0-.87-1.114ZM6.358 18.208a.926.926 0 0 1 0-1.85.926.926 0 0 1 0 1.85Zm10.015 0a.926.926 0 0 1 0-1.85.926.926 0 0 1 0 1.85Zm2.021-7.243-13.8.81-.57-6.341h15.753l-1.383 5.53Z" fill="currentColor" fill-rule="nonzero"/></svg>
+                            Add to cart
+                        </button>
+                        <div class="-mt-2 text-error font-bold text-xs basis-full" x-text="error" x-show="error"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Menu overlay -->
+        <div class="block w-screen h-screen bg-overlay absolute top-0 left-0" x-show="menuOpen" @click="menuOpen = false"></div>
+        <!-- Lighbox overlay -->
+        <div class="hidden md:block w-screen h-screen bg-overlay absolute top-0 left-0" x-show="lightbox"></div>
+
+        <!-- Lightbox -->
+        <div class="hidden absolute h-full w-full md:flex flex-col justify-center items-center" x-show="lightbox" @click.self="lightbox = false">
+            <div class="max-w-xl w-full flex justify-end">
+                <button class="mb-8" @click="lightbox = false">
+                    <svg class="w-6 h-6 fill-gray-600 hover:fill-orange-200" viewBox="0 0 14 14"><path d="m11.596.782 2.122 2.122L9.12 7.499l4.597 4.597-2.122 2.122L7 9.62l-4.595 4.597-2.122-2.122L4.878 7.5.282 2.904 2.404.782l4.595 4.596L11.596.782Z"/></svg>
+                </button>
+            </div>
+            <div class="mb-4 w-screen max-w-xl overflow-hidden md:rounded-xl">
+                <a href="#" class="flex transition-transform duration-500 ease-out" :class="gallery.translate">
+                    <img src="/image-product-1.jpg" alt="Fall Limited Edition Sneakers">
+                    <img src="/image-product-2.jpg" alt="Fall Limited Edition Sneakers">
+                    <img src="/image-product-3.jpg" alt="Fall Limited Edition Sneakers">
+                    <img src="/image-product-4.jpg" alt="Fall Limited Edition Sneakers">
+                </a>
+            </div>
+            <!-- Controls -->
+            <div class="p-4 w-full max-w-2xl flex justify-between absolute top-1/2 -translate-y-20">
+                <button class="w-16 h-16 bg-gray-600 rounded-full" @click="prevSlide">
+                    <svg class="m-auto stroke-gray-100 hover:stroke-orange-200" width="16" height="18" xmlns="http://www.w3.org/2000/svg"><path d="M11 1 3 9l8 8" stroke-width="3" fill="none" fill-rule="evenodd"/></svg>
+                </button>
+                <button class="w-16 h-16 bg-gray-600 rounded-full" @click="nextSlide">
+                    <svg class="m-auto stroke-gray-100 hover:stroke-orange-200" width="12" height="18" xmlns="http://www.w3.org/2000/svg"><path d="m2 1 8 8-8 8" stroke-width="3" fill="none" fill-rule="evenodd"/></svg>
+                </button>
+            </div>
+            <!-- Thumbnails -->
+            <div class="mt-6 max-w-lg w-full grid grid-cols-4 gap-8">
+                <a href="#" class="block relative rounded-xl overflow-hidden hover:active-state" :class="gallery.position === 0 ? 'active-state ring ring-orange-200' : ''" @click="setGalleryPosition(0)"><img src="image-product-1-thumbnail.jpg" alt="Tumbnail 1"></a>
+                <a href="#" class="block relative rounded-xl overflow-hidden hover:active-state" :class="gallery.position === 1 ? 'active-state ring ring-orange-200' : ''" @click="setGalleryPosition(1)"><img src="image-product-2-thumbnail.jpg" alt="Tumbnail 2"></a>
+                <a href="#" class="block relative rounded-xl overflow-hidden hover:active-state" :class="gallery.position === 2 ? 'active-state ring ring-orange-200' : ''" @click="setGalleryPosition(2)"><img src="image-product-3-thumbnail.jpg" alt="Tumbnail 3"></a>
+                <a href="#" class="block relative rounded-xl overflow-hidden hover:active-state" :class="gallery.position === 3 ? 'active-state ring ring-orange-200' : ''" @click="setGalleryPosition(3)"><img src="image-product-4-thumbnail.jpg" alt="Tumbnail 4"></a>
+            </div>
+        </div>
+    </body>
+</html>

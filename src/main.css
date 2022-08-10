@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .active-state {
+        @apply before:block before:w-full before:h-full before:absolute before:left-0 before:top-0 before:bg-active-overlay;
+    }
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Fix for missing custom properties in Tailwind */
+.-translate-x-100 {
+    transform: translateX(-100%);
+}
+
+.-translate-x-200 {
+    transform: translateX(-200%);
+}
+
+.-translate-x-300 {
+    transform: translateX(-300%);
+}
